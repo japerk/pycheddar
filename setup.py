@@ -10,6 +10,5 @@ setup(
     author='FeedMagnet',
     url='http://www.feedmagnet.com/blog/cheddargetter-for-python-and-django/',
     requires=['httplib2',],
-    package_dir={'pycheddar': 'src'},
     packages=['pycheddar'],
 )
