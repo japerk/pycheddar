@@ -710,7 +710,7 @@ class Subscription(CheddarObject):
         return self
         
     
-    def delete(self):
+    def delete(self, *args, **kwargs):
         """Remove this subscription from CheddarGetter."""
         
         # this is straightforward: just run the cancellation
