@@ -576,8 +576,9 @@ class Customer(CheddarObject):
         """Retrieve an item by item code. If the item does not exist,
         raise ValueError."""
 
-        for item in self.items:
+        for item in self.subscription.items:
             if item.code == item_code:
+                item.customer = self
                 return item
 
         raise ValueError, 'Item not found.'
@@ -761,7 +762,7 @@ class Item(CheddarObject):
         raise ValidationError otherwise."""
         
         # sanity check: I can only modify this item if it's directly attached
-        # to the cuastomer
+        # to the customer
         if not hasattr(self, 'customer'):
             raise ValidationError, 'Items may only have their quantity altered if they are directly attached to a customer.'
             
@@ -782,7 +783,13 @@ class Item(CheddarObject):
         self.validate()
     
         # okay, save to CheddarGetter
-        xml = CheddarGetter.request('/customers/set-item-quantity/', product_code = self._product_code, item_code = self.code, code = self.customer.code)
+        xml = CheddarGetter.request(
+                '/customers/set-item-quantity/',
+                product_code=self._product_code,
+                item_code=self.code,
+                code=self.customer.code,
+                quantity=self.quantity)
+
         self._load_data_from_xml(xml)
         return self
 
