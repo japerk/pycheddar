@@ -127,7 +127,7 @@ View the items included in a plan...
     
 Set an item's quantity (if the item is attached to a customer):
 
-    >>> item = customer.items[0]
+    >>> item = customer.get_item("The Item's Code")
     >>> item.quantity = 5
     >>> item.save()
     >>>
