@@ -324,12 +324,7 @@ class CheddarObject(object):
                     
                         # the XML underneath here constitutes the necessary
                         # XML to generate that object; call its XML function
-                        if child.tag == 'items':
-                            tmp_item = klass.from_xml(indiv_xml, parent=self)
-                            getattr(self, child.tag)[tmp_item.code] = tmp_item
-                        else:
-                            getattr(self, child.tag).append(klass.from_xml(indiv_xml, parent = self))
-
+                        getattr(self, child.tag).append(klass.from_xml(indiv_xml, parent = self))
                     except AttributeError:
                         break
                         
@@ -448,11 +443,12 @@ class Plan(CheddarObject):
         """Retrieve an item by item code. If the item does not exist,
         raise ValueError."""
         
-        if item_code in self.items:
-            return self.items[item_code]
-        else:
-            raise ValueError, 'Item not found.'
-
+        for item in self.items:
+            if item.code == item_code:
+                return item
+                
+        raise ValueError, 'Item not found.'
+            
             
 class Customer(CheddarObject):
     """An object representing a CheddarGetter customer."""
@@ -580,11 +576,12 @@ class Customer(CheddarObject):
         """Retrieve an item by item code. If the item does not exist,
         raise ValueError."""
 
-        if item_code in self.subscription.items:
-            self.subscription.items[item_code].customer = self
-            return self.subscription.items[item_code]
-        else:
-            raise ValueError, 'Item not found.'
+        for item in self.subscription.items:
+            if item.code == item_code:
+                item.customer = self
+                return item
+
+        raise ValueError, 'Item not found.'
         
         
     def add_charge(self, charge_code, item_code, amount = 0.0, quantity = 1, description = None):
