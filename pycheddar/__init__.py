@@ -8,8 +8,6 @@ from utils import *
 from xml.etree import ElementTree
 from urllib import urlencode
 
-from django.core.cache import cache
-
 VERSION = '0.9.3'
 
 class CheddarGetter:
@@ -498,17 +496,17 @@ class Customer(CheddarObject):
         Raises NotFound if the customer code does not exist
         in CheddarGetter."""
 
-        from django.conf import settings
-        cache_string = 'cg_{0}_customer_{1}'.format(settings.CHEDDARGETTER_PRODUCT_CODE, code)
-        cached_customer = cache.get(cache_string)
-        if cached_customer is not None:
-            return pickle.loads(cached_customer)
-        else:
-            xml = CheddarGetter.request('/customers/get/', code=code)
-            for customer_xml in xml.getiterator(tag='customer'):
-                customer = Customer.from_xml(customer_xml)
-                cache.set(cache_string, pickle.dumps(customer), 3600)
-                return customer
+        #from django.conf import settings
+        #cache_string = 'cg_{0}_customer_{1}'.format(settings.CHEDDARGETTER_PRODUCT_CODE, code)
+        #cached_customer = cache.get(cache_string)
+        #if cached_customer is not None:
+        #    return pickle.loads(cached_customer)
+        #else:
+        xml = CheddarGetter.request('/customers/get/', code=code)
+        for customer_xml in xml.getiterator(tag='customer'):
+            customer = Customer.from_xml(customer_xml)
+            #cache.set(cache_string, pickle.dumps(customer), 3600)
+            return customer
     
     
     def validate(self):
@@ -567,10 +565,10 @@ class Customer(CheddarObject):
 
         # either way, I should get a well-formed customer XML response
         # that can now be loaded into this object
-        from django.conf import settings
+        #from django.conf import settings
         for customer_xml in xml.getiterator(tag='customer'):
             self._load_data_from_xml(customer_xml)
-            cache.set('cg_{0}_customer_{1}'.format(settings.CHEDDARGETTER_PRODUCT_CODE, code), pickle.dumps(Customer.from_xml(customer_xml)), 3600)
+            #cache.set('cg_{0}_customer_{1}'.format(settings.CHEDDARGETTER_PRODUCT_CODE, code), pickle.dumps(Customer.from_xml(customer_xml)), 3600)
             break
             
         return self
