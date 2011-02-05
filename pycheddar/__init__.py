@@ -802,6 +802,21 @@ class Item(CheddarObject):
 
         self._load_data_from_xml(xml)
         return self
+    
+    def add(self, quantity):
+        """Increment item quantity back to CheddarGetter."""
+        self.quantity += quantity
+        self.validate()
+        
+        xml = CheddarGetter.request(
+                '/customers/add-item-quantity/',
+                product_code=self._product_code,
+                item_code=self.code,
+                code=self.customer.code,
+                quantity=quantity)
+
+        self._load_data_from_xml(xml)
+        return self
 
 
 class Invoice(CheddarObject):
