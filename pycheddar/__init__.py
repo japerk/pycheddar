@@ -98,8 +98,6 @@ class CheddarGetter:
         request, content = cls._http.request(url, method = 'POST', body = urlencode(kwargs), headers = {
             'content-type': 'application/x-www-form-urlencoded'
         })
-
-        print content
         
         # parse the XML
         try:
