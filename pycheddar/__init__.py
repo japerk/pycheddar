@@ -293,6 +293,7 @@ class CheddarObject(object):
         singles = (
             ('customer', 'subscriptions'),
             ('subscription', 'plans'),
+            ('invoice', 'transactions'),
         )
         
         for child in xml.getchildren():
@@ -825,6 +826,9 @@ class Invoice(CheddarObject):
 
 class Charge(CheddarObject):
     """An object representing a CheddarGetter charge."""
+
+class Transaction(CheddarObject):
+    """An object representing a CheddarGetter transaction."""
 
 # if we are using Django, and if the appropriate settings
 # are already set in Django, just import them automatically
