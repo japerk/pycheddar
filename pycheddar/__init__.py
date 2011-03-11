@@ -549,7 +549,7 @@ class Customer(CheddarObject):
             
             # if credit card information is available in the subscription,
             # send it as well
-            cc_info = ['cc_first_name', 'cc_last_name', 'cc_number', 'cc_expiration', 'cc_card_code', 'cc_zip']
+            cc_info = ['cc_first_name', 'cc_last_name', 'cc_number', 'cc_expiration', 'cc_card_code', 'cc_zip', 'cc_address']
             for key in cc_info:
                 if key in self.subscription:
                     kwargs['subscription[%s]' % key] = getattr(self.subscription, key)
