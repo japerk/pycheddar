@@ -466,6 +466,9 @@ class Customer(CheddarObject):
         self.subscription = Subscription(parent = self)
         super(Customer, self).__init__(**kwargs)
         
+        if not hasattr(self, 'meta_data'):
+            self.meta_data = []
+        
         
     @classmethod
     def all(cls):
