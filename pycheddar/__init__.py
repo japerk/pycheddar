@@ -341,7 +341,7 @@ class CheddarObject(object):
             if value is not None:
                 if re.match(r'^[\d]+$', value):
                     value = int(value)
-                elif re.match(r'^[\d.]+$', value):
+                elif re.match(r'^[\d.]+$', value) and value.count('.') <= 1:
                     value = float(value)
             elif (xml.tag, child.tag) in singles:
                 class_name = child.tag.capitalize()
